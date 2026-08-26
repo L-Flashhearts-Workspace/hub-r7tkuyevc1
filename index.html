@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow, noarchive, noimageindex">
+<title>Rwh Alliance — Weekly Tracker</title>
+<style>
+:root{
+  --bg:#12151c; --surface:#1a1e28; --surface2:#222736; --line:#2e3444;
+  --ink:#e7eaf0; --ink2:#9aa3b2; --ink3:#6b7383;
+  --accent:#5b8def; --accent-soft:rgba(91,141,239,.16);
+  --gold:#e5b84b; --warn:#e5b84b; --bad:#e06c75;
+  --radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,"Segoe UI",Roboto,Arial,sans-serif;padding:14px 12px 40px}
+.wrap{max-width:1100px;margin:0 auto}
+header{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:6px}
+h1{font-size:19px;font-weight:700;letter-spacing:.2px}
+h1 .tag{color:var(--accent)}
+.sub{color:var(--ink2);font-size:12px;margin-bottom:12px}
+.badge{display:inline-block;background:rgba(229,184,75,.15);color:var(--gold);border:1px solid rgba(229,184,75,.4);border-radius:999px;padding:2px 10px;font-size:11px;font-weight:700;letter-spacing:.5px;vertical-align:2px}
+.langs{display:flex;gap:6px}
+.langs button{background:var(--surface);border:1px solid var(--line);color:var(--ink2);border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer}
+.langs button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px;margin:12px 0 14px}
+.tile{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:10px 12px}
+.tile .k{color:var(--ink2);font-size:11px;text-transform:uppercase;letter-spacing:.6px;margin-bottom:4px}
+.tile .v{font-size:19px;font-weight:700;font-variant-numeric:tabular-nums}
+.tile .v small{font-size:12px;color:var(--ink2);font-weight:400}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px}
+.tabs button{background:var(--surface);border:1px solid var(--line);color:var(--ink2);border-radius:8px;padding:7px 14px;font-size:13px;cursor:pointer}
+.tabs button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink);font-weight:600}
+.pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.pills button{background:var(--surface);border:1px solid var(--line);color:var(--ink2);border-radius:999px;padding:4px 12px;font-size:12px;cursor:pointer}
+.pills button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--ink)}
+.tblwrap{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:14px}
+table{border-collapse:collapse;width:100%;min-width:560px}
+th,td{padding:7px 10px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;border-bottom:1px solid var(--line);font-size:13px}
+th{color:var(--ink2);font-size:11px;text-transform:uppercase;letter-spacing:.5px;position:sticky;top:0;background:var(--surface2);z-index:2}
+td.name,th.name{text-align:left;position:sticky;left:0;background:var(--surface);z-index:1;max-width:180px;overflow:hidden;text-overflow:ellipsis}
+th.name{background:var(--surface2);z-index:3}
+td.rank,th.rank{text-align:center;color:var(--ink2);position:sticky;left:0;background:var(--surface);width:38px;min-width:38px;z-index:1}
+th.rank{background:var(--surface2);z-index:3}
+td.rank + td.name, th.rank + th.name{left:38px}
+tr.dep td{color:var(--ink3)}
+tr.dep td.name{color:var(--ink3)}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:rgba(91,141,239,.07)}
+tr:hover td.name, tr:hover td.rank{background:#212637}
+.bar{position:relative}
+.bar i{position:absolute;inset-inline-start:0;top:15%;height:70%;background:var(--accent-soft);border-radius:0 4px 4px 0;z-index:0}
+[dir=rtl] .bar i{border-radius:4px 0 0 4px}
+.bar b{position:relative;z-index:1;font-weight:600}
+.top3 td.rank{color:var(--gold);font-weight:700}
+.star{color:var(--gold)}
+.foot{color:var(--ink2);font-size:12px;margin-top:10px;line-height:1.6}
+.foot .star{margin-inline-end:2px}
+.zero{color:var(--ink3)}
+h2{font-size:15px;margin:16px 0 8px}
+h2 .seas{color:var(--accent);font-weight:600}
+.plink{cursor:pointer}
+.plink:hover{color:var(--accent);text-decoration:underline}
+.lseen{color:var(--ink3);font-size:11px;margin-inline-start:6px;text-transform:none;letter-spacing:0}
+.search{width:100%;max-width:340px;background:var(--surface);border:1px solid var(--line);color:var(--ink);border-radius:8px;padding:8px 12px;font-size:14px;margin-bottom:10px}
+.search::placeholder{color:var(--ink3)}
+.plist{display:flex;flex-wrap:wrap;gap:6px}
+.plist button{background:var(--surface);border:1px solid var(--line);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer}
+.plist button:hover{border-color:var(--accent);color:var(--accent)}
+.plist button.depp{color:var(--ink3)}
+.hint{color:var(--ink2);font-size:13px;margin:8px 0}
+.chartwrap{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:10px 6px 4px;margin-bottom:10px}
+.chartwrap svg{width:100%;height:auto;display:block}
+.legend{display:flex;gap:14px;flex-wrap:wrap;font-size:12px;color:var(--ink2);padding:4px 8px 8px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-inline-end:5px;vertical-align:-1px}
+.dot.hollow{background:transparent;border:2px solid var(--warn)}
+.note{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:8px 12px;margin-top:8px;font-size:13px;color:var(--ink2)}
+.note b{color:var(--ink)}
+.notice{background:var(--accent-soft);border:1px solid var(--accent);border-radius:var(--radius);padding:10px 13px;margin-bottom:12px;font-size:13px;color:var(--ink)}
+.pname{font-size:18px;font-weight:700;margin:4px 0 2px}
+.pstatus{font-size:12px;margin-bottom:10px}
+.pstatus.cur{color:#7bc98a}
+.pstatus.gone{color:var(--ink3)}
+[dir=rtl] th,[dir=rtl] td{text-align:left}
+[dir=rtl] td.name,[dir=rtl] th.name{text-align:right}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1><span class="tag">[Rwh]</span> <span id="t-title"></span> <span class="badge" id="badge" style="display:none"></span></h1>
+    <div class="langs" id="langs"></div>
+  </header>
+  <div class="sub" id="t-sub"></div>
+  <div class="tiles" id="tiles"></div>
+  <div class="tabs" id="tabs"></div>
+  <div id="view"></div>
+  <div class="foot" id="foot"></div>
+</div>
+<script>
+const CFG = {"tag":"Rwh","metric":"weekly","tabs":["overview","player","league","season"],"langs":["en","de","tr"],"showExclSaving":false};
+const DATA = {"generated":"2026-08-26","weeks":["2026-08-22"],"weekMeta":[{"d":"2026-08-22","season":"S1","league":"2026-08-22 to 2026-09-12","type":"Unknown","period":null,"hist":false}],"latest":"2026-08-22","noSat":[],"irregular":[],"estW":[],"leagues":["2026-08-22 to 2026-09-12"],"players":[{"n":"dong meng","wk":{"0":[70111608,null]}},{"n":"FallenK1NG","wk":{"0":[46539430,null]}},{"n":"L Flashheart V","wk":{"0":[43388305,null]}},{"n":"Chanchoking","wk":{"0":[38095852,null]}},{"n":"Jaqbu","wk":{"0":[37317840,null]}},{"n":"ChrisGivesNoFox","wk":{"0":[36450288,null]}},{"n":"Bumdeath","wk":{"0":[35694224,null]}},{"n":"IceyGaston182","wk":{"0":[30681238,null]}},{"n":"Irenda","wk":{"0":[26841406,null]}},{"n":"mcthroatie","wk":{"0":[26741671,null]}},{"n":"Ziigy","wk":{"0":[25851770,null]}},{"n":"ZzBUBBLESzZ","wk":{"0":[25074578,null]}},{"n":"Icey RIFIIÑO","wk":{"0":[24443823,null]}},{"n":"RedDogsSakeCup","wk":{"0":[22287173,null]}},{"n":"Joti99","wk":{"0":[19838482,null]}},{"n":"Kenzie 111","wk":{"0":[18473034,null]}},{"n":"Bertiz","wk":{"0":[18351785,null]}},{"n":"Street12","wk":{"0":[18136369,null]}},{"n":"Iceyfaris","wk":{"0":[17865202,null]}},{"n":"Papagorgan","wk":{"0":[17566425,null]}},{"n":"IceyTea","wk":{"0":[16848315,null]}},{"n":"JenO","wk":{"0":[16735847,null]}},{"n":"Flashheart V Jr","wk":{"0":[16500673,null]}},{"n":"nemesisAN","wk":{"0":[16385473,null]}},{"n":"uthred 1","wk":{"0":[16353640,null]}},{"n":"-Dancok","wk":{"0":[16086557,null]}},{"n":"Flaco 06","wk":{"0":[15276192,null]}},{"n":"sheldon 77","wk":{"0":[15219736,null]}},{"n":"SakazukixAkainu","wk":{"0":[14873134,null]}},{"n":"out here","wk":{"0":[13928767,null]}},{"n":"Kabelgoot","wk":{"0":[13432431,null]}},{"n":"Mr Colly","wk":{"0":[12740992,null]}},{"n":"Lil Bunny FuFu","wk":{"0":[12563735,null]}},{"n":"Célas62","wk":{"0":[12561556,null]}},{"n":"yawachris","wk":{"0":[11973341,null]}},{"n":"Dayak","wk":{"0":[11612217,null]}},{"n":"JayhawkRC","wk":{"0":[11422509,null]}},{"n":"BibbdiBobbdiBoo","wk":{"0":[11185112,null]}},{"n":"Gejuhkentel","wk":{"0":[11099750,null]}},{"n":"IceyBri","wk":{"0":[11033279,null]}},{"n":"KluseK","wk":{"0":[10991431,null]}},{"n":"PvtGump","wk":{"0":[10816521,null]}},{"n":"Doom66","wk":{"0":[10518709,null]}},{"n":"Iceyfrosty","wk":{"0":[10488086,null]}},{"n":"SaleMLBB","wk":{"0":[10477339,null]}},{"n":"-INVICTUS-","wk":{"0":[10318983,null]}},{"n":"ICEYHAYS","wk":{"0":[10248387,null]}},{"n":"IceyMel","wk":{"0":[10078819,null]}},{"n":"ancuung","wk":{"0":[9770934,null]}},{"n":"PopaSmurf","wk":{"0":[9459541,null]}},{"n":"MrHuckelberry","wk":{"0":[9166623,null]}},{"n":"WildScrub","wk":{"0":[8968631,null]}},{"n":"elite 360","wk":{"0":[8688240,null]}},{"n":"Diable bleu","wk":{"0":[8531757,null]}},{"n":"Goodnaturedrich","wk":{"0":[8405704,null]}},{"n":"Icey Alpha","wk":{"0":[7937126,null]}},{"n":"Firestorm-","wk":{"0":[7867101,null]}},{"n":"agenKHusus","wk":{"0":[7831974,null]}},{"n":"messimontana","wk":{"0":[7794988,null]}},{"n":"Covboy","wk":{"0":[7736152,null]}},{"n":"xurielzn","wk":{"0":[7660405,null]}},{"n":"Mtch","wk":{"0":[7653899,null]}},{"n":"Mr sylas","wk":{"0":[7558462,null]}},{"n":"comander-marta","wk":{"0":[7511389,null]}},{"n":"TogFARM","wk":{"0":[7264160,null]}},{"n":"Chipiron","wk":{"0":[7197302,null]}},{"n":"Erick Dravon","wk":{"0":[7065279,null]}},{"n":"Adins69","wk":{"0":[6776360,null]}},{"n":"EnglishTailor","wk":{"0":[6766610,null]}},{"n":"TDog33","wk":{"0":[6720965,null]}},{"n":"Mrharmonic","wk":{"0":[6710521,null]}},{"n":"Apple Jax","wk":{"0":[6632630,null]}},{"n":"ROH7","wk":{"0":[6509927,null]}},{"n":"Lsu tigers","wk":{"0":[6469292,null]}},{"n":"59kitt","wk":{"0":[6291022,null]}},{"n":"ABU NAiF","wk":{"0":[5890546,null]}},{"n":"Darth Wader","wk":{"0":[5403390,null]}},{"n":"DEMONツBENDY","wk":{"0":[5388372,null]}},{"n":"Jack639222","wk":{"0":[5219022,null]}},{"n":"LK10e","wk":{"0":[5066899,null]}},{"n":"FckRoundFindOut","wk":{"0":[4782072,null]}},{"n":"DaryL-¥-DixoN","wk":{"0":[4641907,null]}},{"n":"khinan1910","wk":{"0":[4568776,null]}},{"n":"Pestillo68","wk":{"0":[3966671,null]}},{"n":"JudyValori20772","wk":{"0":[3601693,null]}},{"n":"Mirec svk","wk":{"0":[3354366,null]}},{"n":"King Orca","wk":{"0":[2871695,null]}},{"n":"FrozenH20Coyote","wk":{"0":[2838505,null]}},{"n":"Paulo Ricardo17","wk":{"0":[2539807,null]}},{"n":"CRock187","wk":{"0":[2309627,null]}},{"n":"SkVenom","wk":{"0":[2181248,null]}},{"n":"VascoUnathletic","wk":{"0":[1900638,null]}},{"n":"mooji","wk":{"0":[1503693,null]}},{"n":"RCB2","wk":{"0":[1437536,null]}},{"n":"Nikita Warrior","wk":{"0":[1239034,null]}},{"n":"Aragorn7","wk":{"0":[1191971,null]}},{"n":"Omega G","wk":{"0":[1047856,null]}},{"n":"Lord Magma","wk":{"0":[190350,null]}}],"events":[],"fnVars":{"n":98,"lowName":"Lord Magma","lowVal":"190,350"}};
+const L = {"en":{"dir":"ltr","nf":"en-GB","lab":"EN","title":"Alliance Weekly Tracker","sub":"Last Z alliance duel — ranked by {metric}. {weeks}, {range}. Updated {date}.","weeksN":"{n} weeks recorded","weeks1":"1 week recorded","saving":"SAVING WEEK","savingLong":"Saving week: points are banked this week, so it is excluded from the “excl. saving” totals.","latest":"Latest week","type":"Week type","tNormal":"Normal","tSaving":"Saving","tUnknown":"Unknown","playersN":"Players","allTotal":"Alliance weekly total","exclSat":"Total excl. Saturday","weeksTracked":"Weeks tracked","playersAllTime":"Players tracked","rankedBy":"Ranked by","tabs":{"overview":"Overview","history":"History","player":"Player","league":"League","season":"Season","events":"Events"},"rank":"#","player":"Player","weekly":"Weekly total","sat":"Saturday","wksat":"Week − Sat","ptsAll":"Points (all weeks)","ptsExcl":"Points (excl. saving)","weeksRec":"Weeks","evPts":"Event points","evScored":"Scored","evMissed":"Missed","evTotal":"Events","score":"Score","joined":"joined w/e {date}","left":"left the alliance","snapshot":"left before the final capture — values are a mid-Saturday snapshot","legend":"★ new joiner · greyed rows = departed players (history kept)","noData":"—","clickHint":"Tip: click any player name to open their full history.","histTotal":"Period total","lastSeen":"Last seen","firstSeen":"First seen","avg":"Average","best":"Best week","worst":"Worst week","totalPts":"Total points","weeksRecorded":"Weeks recorded","statusCur":"Current member","statusDep":"Departed","prevNames":"Previously recorded as","searchPh":"Search players…","pickPlayer":"Select a player to see their full history.","chartYlbl":"Weekly total","noTrend":"Only one week of data so far, so there is no trend to show yet. This chart appears once a second week is recorded."},"de":{"dir":"ltr","nf":"de-DE","lab":"DE","title":"Allianz-Wochentracker","sub":"Last Z Allianzduell — sortiert nach {metric}. {weeks}, {range}. Stand {date}.","weeksN":"{n} erfasste Wochen","weeks1":"1 erfasste Woche","saving":"SPARWOCHE","savingLong":"Sparwoche: Punkte werden diese Woche angespart; sie zählt nicht zu den Summen „ohne Sparwochen“.","latest":"Letzte Woche","type":"Wochentyp","tNormal":"Normal","tSaving":"Sparen","tUnknown":"Unbekannt","playersN":"Spieler","allTotal":"Allianz-Wochensumme","exclSat":"Summe ohne Samstag","weeksTracked":"Erfasste Wochen","playersAllTime":"Erfasste Spieler","rankedBy":"Sortiert nach","tabs":{"overview":"Übersicht","history":"Verlauf","player":"Spieler","league":"Liga","season":"Saison","events":"Events"},"rank":"#","player":"Spieler","weekly":"Wochensumme","sat":"Samstag","wksat":"Woche − Sa","ptsAll":"Punkte (alle Wochen)","ptsExcl":"Punkte (ohne Sparwochen)","weeksRec":"Wochen","evPts":"Event-Punkte","evScored":"Gewertet","evMissed":"Verpasst","evTotal":"Events","score":"Punkte","joined":"beigetreten (Woche {date})","left":"hat die Allianz verlassen","snapshot":"vor der letzten Erfassung ausgetreten — Werte sind ein Samstag-Zwischenstand","legend":"★ Neuzugang · graue Zeilen = ausgetretene Spieler (Historie bleibt)","noData":"—","clickHint":"Tipp: Auf einen Spielernamen klicken, um die vollständige Historie zu öffnen.","histTotal":"Zeitraumsumme","lastSeen":"Letzter Eintrag","firstSeen":"Erster Eintrag","avg":"Durchschnitt","best":"Beste Woche","worst":"Schwächste Woche","totalPts":"Gesamtpunkte","weeksRecorded":"Erfasste Wochen","statusCur":"Aktives Mitglied","statusDep":"Ausgetreten","prevNames":"Früher erfasst als","searchPh":"Spieler suchen…","pickPlayer":"Spieler auswählen, um die vollständige Historie zu sehen.","chartYlbl":"Wochensumme","noTrend":"Bisher liegt nur eine Woche vor, daher gibt es noch keinen Trend. Dieses Diagramm erscheint, sobald eine zweite Woche erfasst ist."},"tr":{"dir":"ltr","nf":"tr-TR","lab":"TR","title":"İttifak Haftalık Takip","sub":"Last Z ittifak düellosu — {metric} sıralaması. {weeks}, {range}. Güncelleme {date}.","weeksN":"{n} hafta kayıtlı","weeks1":"1 hafta kayıtlı","saving":"BİRİKTİRME HAFTASI","savingLong":"Biriktirme haftası: puanlar bu hafta biriktirilir, bu yüzden “biriktirme hariç” toplamlarına dahil edilmez.","latest":"Son hafta","type":"Hafta türü","tNormal":"Normal","tSaving":"Biriktirme","tUnknown":"Bilinmiyor","playersN":"Oyuncular","allTotal":"İttifak haftalık toplamı","exclSat":"Cumartesi hariç toplam","weeksTracked":"Takip edilen haftalar","playersAllTime":"Takip edilen oyuncular","rankedBy":"Sıralama ölçütü","tabs":{"overview":"Genel Bakış","history":"Geçmiş","player":"Oyuncu","league":"Lig","season":"Sezon","events":"Etkinlikler"},"rank":"#","player":"Oyuncu","weekly":"Haftalık toplam","sat":"Cumartesi","wksat":"Hafta − Cmt","ptsAll":"Puanlar (tüm haftalar)","ptsExcl":"Puanlar (biriktirme hariç)","weeksRec":"Haftalar","evPts":"Etkinlik puanları","evScored":"Puan aldı","evMissed":"Kaçırdı","evTotal":"Etkinlikler","score":"Puan","joined":"katıldı (h/s {date})","left":"ittifaktan ayrıldı","snapshot":"son kayıttan önce ayrıldı — değerler cumartesi ortası anlık görüntüsüdür","legend":"★ yeni katılan · gri satırlar = ayrılan oyuncular (geçmiş korunur)","noData":"—","clickHint":"İpucu: tam geçmişini açmak için herhangi bir oyuncu adına tıklayın.","histTotal":"Dönem toplamı","lastSeen":"Son görülme","firstSeen":"İlk görülme","avg":"Ortalama","best":"En iyi hafta","worst":"En kötü hafta","totalPts":"Toplam puan","weeksRecorded":"Kayıtlı haftalar","statusCur":"Mevcut üye","statusDep":"Ayrıldı","prevNames":"Önceden kayıtlı adı","searchPh":"Oyuncu ara…","pickPlayer":"Tam geçmişini görmek için bir oyuncu seçin.","chartYlbl":"Haftalık toplam","noTrend":"Şu ana kadar yalnızca bir haftalık veri var, bu yüzden gösterilecek bir eğilim yok. Bu grafik ikinci hafta kaydedildiğinde görünür."}};
+const FN = {"en":["Week 1. There is a single capture this week: the full weekly total, which already includes Saturday. No separate Saturday capture was taken, so Saturday and Week − Saturday are deliberately empty — not estimated, not inferred, not zero.","This week the table is ranked by Weekly Total. Week − Saturday becomes the headline metric as soon as Saturday captures begin — the columns are already in place and will fill in.","Week type is recorded as “Unknown”. This alliance does not run saving weeks yet, and week type is never inferred from scores.","Roster: 98 players, ranks 1–98 with no gaps and no duplicates. Lowest score (Lord Magma, 190,350) is a genuine reading from the capture, not a transcription error."],"de":["Woche 1. Diese Woche gibt es nur eine Erfassung: die volle Wochensumme, die den Samstag bereits enthält. Es wurde keine separate Samstagserfassung gemacht, daher bleiben Samstag und Woche − Samstag bewusst leer — nicht geschätzt, nicht abgeleitet, nicht null.","Diese Woche wird nach der Wochensumme sortiert. Woche − Samstag wird zur Hauptkennzahl, sobald Samstagserfassungen beginnen — die Spalten sind bereits angelegt und füllen sich dann.","Der Wochentyp ist als „Unbekannt“ erfasst. Diese Allianz führt noch keine Sparwochen, und der Wochentyp wird niemals aus den Punkten abgeleitet.","Kader: 98 Spieler, Ränge 1–98 ohne Lücken und ohne Duplikate. Der niedrigste Wert (Lord Magma, 190,350) ist eine echte Ablesung aus der Aufnahme, kein Übertragungsfehler."],"tr":["1. hafta. Bu hafta tek bir kayıt var: cumartesiyi zaten içeren tam haftalık toplam. Ayrı bir cumartesi kaydı alınmadı, bu yüzden Cumartesi ve Hafta − Cumartesi bilerek boş bırakıldı — tahmin edilmedi, çıkarılmadı, sıfırlanmadı.","Bu hafta tablo Haftalık Toplam'a göre sıralanmıştır. Cumartesi kayıtları başladığında Hafta − Cumartesi ana ölçüt olacak — sütunlar hazır ve o zaman dolacak.","Hafta türü “Bilinmiyor” olarak kaydedildi. Bu ittifak henüz biriktirme haftası uygulamıyor ve hafta türü asla puanlardan çıkarılmaz.","Kadro: 98 oyuncu, 1–98 sıraları boşluksuz ve tekrarsız. En düşük puan (Lord Magma, 190,350) kayıttan alınan gerçek bir değerdir, yazım hatası değildir."]};
+
+const W = DATA.weeks, NW = W.length, LI = NW-1;
+const WM = {}; DATA.weekMeta.forEach(m=>WM[m.d]=m);
+const NOSAT = new Set((DATA.noSat||[]).map(d=>W.indexOf(d)));
+const ESTW  = new Set((DATA.estW||[]).map(d=>W.indexOf(d)));
+const IRREG = new Set((DATA.irregular||[]).map(d=>W.indexOf(d)));
+const SEASONS = [...new Set(DATA.weekMeta.map(m=>m.season))];
+const LEAGUES = DATA.leagues||[];
+const HAS_SAT = DATA.players.some(p=>Object.values(p.wk).some(c=>c[1]!=null));
+
+let state = {lang:CFG.langs[0], tab:0, league:LEAGUES[LEAGUES.length-1],
+             season:SEASONS[SEASONS.length-1], event:0, player:null, q:''};
+
+const $ = id => document.getElementById(id);
+const t = () => L[state.lang];
+const fmt = n => n==null||n===''?t().noData:new Intl.NumberFormat(t().nf).format(Math.round(n));
+const loc = () => t().nf;
+const fcompact = n => new Intl.NumberFormat(loc(),{notation:'compact',maximumFractionDigits:1}).format(n);
+const fdate = s => new Intl.DateTimeFormat(loc(),{day:'numeric',month:'short',year:'numeric'}).format(new Date(s+'T00:00:00'));
+const fdateShort = s => new Intl.DateTimeFormat(loc(),{day:'numeric',month:'short'}).format(new Date(s+'T00:00:00'));
+const fmon = (s,y) => new Intl.DateTimeFormat(loc(),y?{month:'short',year:'numeric'}:{month:'short'}).format(new Date(s+'T00:00:00'));
+const esc = s => String(s).replace(/[&<>"]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const wkMark = i => (ESTW.has(i)?'*':'') + (NOSAT.has(i)?'**':'') + (IRREG.has(i)?'***':'');
+
+// The one place the headline metric is defined.
+// True Week - Saturday. Null whenever Saturday was not captured - never
+// silently falls back to the weekly total.
+const wksat = c => (!c || c[1]==null) ? null : c[0]-c[1];
+// The ranking metric, chosen by config.
+const val = c => { if(!c) return null;
+  return CFG.metric==='wksat' ? wksat(c) : c[0]; };
+const metricLabel = () => CFG.metric==='wksat' ? t().wksat : t().weekly;
+
+const pWeeks = p => Object.keys(p.wk).map(Number).sort((a,b)=>a-b);
+const last = p => { const w=pWeeks(p); return w[w.length-1]; };
+
+function plink(p, extra){
+  const i = DATA.players.indexOf(p);
+  return `<span class="plink" data-pi="${i}">${esc(p.n)}</span>${p.jn?' <span class="star">★</span>':''}${extra||''}`;
+}
+function stats(p){
+  const ws = pWeeks(p);
+  let total=0, elig=[];
+  ws.forEach(i=>{ const d=val(p.wk[i]); if(d==null) return;
+    total+=d; if(!NOSAT.has(i) && !ESTW.has(i)) elig.push([i,d]); });
+  let avg=null,best=null,worst=null;
+  if(elig.length){
+    avg = elig.reduce((s,e)=>s+e[1],0)/elig.length;
+    best = elig.reduce((a,b)=>b[1]>a[1]?b:a);
+    worst = elig.reduce((a,b)=>b[1]<a[1]?b:a);
+  }
+  return {n:ws.length, total, avg, best, worst, first:ws[0], last:ws[ws.length-1], pts:elig.length};
+}
+
+function render(){
+  const tr = t();
+  document.documentElement.lang = state.lang;
+  document.body.dir = tr.dir;
+  $('t-title').textContent = tr.title;
+  const weeksPhrase = (NW===1 ? tr.weeks1 : tr.weeksN.replace('{n}', fmt(NW)));
+  const range = (W[0]===DATA.latest) ? fdate(W[0]) : fdate(W[0]) + ' – ' + fdate(DATA.latest);
+  $('t-sub').textContent = tr.sub
+    .replace('{metric}', metricLabel())
+    .replace('{weeks}', weeksPhrase)
+    .replace('{range}', range)
+    .replace('{date}', fdate(DATA.generated));
+  const meta = WM[DATA.latest];
+  const b = $('badge');
+  if(meta.type==='Saving'){ b.style.display='inline-block'; b.textContent = tr.saving; } else b.style.display='none';
+
+  $('langs').innerHTML = CFG.langs.map(k=>
+    `<button class="${k===state.lang?'on':''}" onclick="setLang('${k}')">${L[k].lab}</button>`).join('');
+
+  const cur = currentRows();
+  const total = cur.reduce((s,r)=>s+r.w,0);
+  const totalD = cur.reduce((s,r)=>s+(r.d==null?0:r.d),0);
+  const tiles = [
+    [tr.latest, fdate(DATA.latest)],
+    [tr.type, meta.type==='Saving'?tr.tSaving:(meta.type==='Normal'?tr.tNormal:tr.tUnknown)],
+    [tr.playersN, fmt(cur.length)],
+    [tr.allTotal, fmt(total)],
+  ];
+  if(HAS_SAT) tiles.push([tr.exclSat, fmt(totalD) + (ESTW.has(LI)?'*':'')]);
+  else tiles.push([tr.rankedBy, `<span style="font-size:15px">${metricLabel()}</span>`]);
+  tiles.push([tr.weeksTracked, fmt(NW)], [tr.playersAllTime, fmt(DATA.players.length)]);
+  $('tiles').innerHTML = tiles.map(([k,v])=>`<div class="tile"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('');
+
+  $('tabs').innerHTML = CFG.tabs.map((key,i)=>
+    `<button class="${i===state.tab?'on':''}" onclick="setTab(${i})">${tr.tabs[key]}</button>`).join('');
+
+  const key = CFG.tabs[state.tab];
+  const v = $('view');
+  if(key==='overview')      v.innerHTML = overviewHTML(cur);
+  else if(key==='history')  v.innerHTML = historyHTML();
+  else if(key==='player')   v.innerHTML = playerHTML();
+  else if(key==='league')   v.innerHTML = leaguesHTML();
+  else if(key==='season')   v.innerHTML = seasonHTML();
+  else if(key==='events')   v.innerHTML = eventsHTML();
+
+  const anyMarks = DATA.players.some(p=>p.jn||p.dep);
+  let foot = (anyMarks ? tr.legend + ' · ' : '') + tr.clickHint;
+  if(meta.type==='Saving') foot += '<br>' + tr.savingLong;
+  const joins = DATA.players.filter(p=>p.jn && last(p)>=LI-1).map(p=>`<span class="star">★</span>${esc(p.n)} — ${tr.joined.replace('{date}',fdateShort(p.jn))}`);
+  const deps  = DATA.players.filter(p=>p.dep && last(p)>=LI-1).map(p=>`${esc(p.n)} — ${p.snap?tr.snapshot:tr.left}`);
+  if(joins.length) foot += '<br>' + joins.join(' · ');
+  if(deps.length)  foot += '<br>' + deps.join(' · ');
+  const fns = (FN[state.lang]||FN.en);
+  if(fns.length) foot += '<hr style="border:none;border-top:1px solid var(--line);margin:8px 0">' + fns.join('<br>');
+  $('foot').innerHTML = foot;
+
+  if(state._search){ const el=$('psearch'); if(el){ el.value=state.q; el.focus(); const n=el.value.length; el.setSelectionRange(n,n);} state._search=false; }
+}
+
+function currentRows(){
+  return DATA.players
+    .filter(p=>p.wk[LI] && !p.dep)
+    .map(p=>({p, w:p.wk[LI][0], s:p.wk[LI][1], d:wksat(p.wk[LI]), m:val(p.wk[LI])}))
+    .sort((a,b)=>(b.m==null?-Infinity:b.m)-(a.m==null?-Infinity:a.m));
+}
+
+// Week columns run NEWEST FIRST, left to right.
+function recentWeeks(n){
+  const out=[]; for(let i=NW-1;i>=Math.max(0,NW-n);i--) out.push(i); return out;
+}
+
+function overviewHTML(cur){
+  const tr = t();
+  const sortVal = r => r.m==null?0:r.m;
+  const max = Math.max(...cur.map(sortVal));
+  // With a single recorded week the per-week columns would just repeat the
+  // headline column, so they are suppressed.
+  const recent = NW>1 ? recentWeeks(8) : [];
+  let h = '';
+  if(NW===1) h += `<div class="notice">${(FN[state.lang]||FN.en)[1]||''}</div>`;
+  h += `<div class="tblwrap"><table><thead><tr>
+    <th class="rank">${tr.rank}</th><th class="name">${tr.player}</th>
+    <th>${tr.weekly}</th><th>${tr.sat}</th><th>${tr.wksat}</th>` +
+    recent.map(i=>`<th>${fdateShort(W[i])}${wkMark(i)}</th>`).join('') + `</tr></thead><tbody>`;
+  cur.forEach((r,i)=>{
+    const pct = max? Math.max(2, sortVal(r)/max*100):0;
+    const est = ESTW.has(LI)?'*':'';
+    const wcell = CFG.metric==='weekly'
+      ? `<td class="bar"><i style="width:${pct}%"></i><b>${fmt(r.w)}</b></td>`
+      : `<td>${fmt(r.w)}</td>`;
+    const dcell = CFG.metric==='wksat'
+      ? `<td class="bar"><i style="width:${pct}%"></i><b>${fmt(r.d)}${est}</b></td>`
+      : `<td class="${r.d==null?'zero':''}">${fmt(r.d)}</td>`;
+    h += `<tr class="${i<3?'top3':''}"><td class="rank">${i+1}</td>
+      <td class="name">${plink(r.p)}</td>
+      ${wcell}<td class="${r.s==null?'zero':''}">${fmt(r.s)}${r.s==null?'':est}</td>${dcell}` +
+      recent.map(wi=>{const c=r.p.wk[wi];const dv=val(c);
+        return `<td class="${dv==null?'zero':''}">${dv==null?tr.noData:fmt(dv)+(ESTW.has(wi)?'*':'')}</td>`;}).join('') + `</tr>`;
+  });
+  DATA.players.filter(p=>p.dep).forEach(p=>{
+    h += `<tr class="dep"><td class="rank">–</td><td class="name">${plink(p)}<span class="lseen">${fdateShort(W[last(p)])}</span></td>
+      <td>${tr.noData}</td><td>${tr.noData}</td><td>${tr.noData}</td>` +
+      recent.map(wi=>{const c=p.wk[wi];const dv=val(c);
+        return `<td class="zero">${dv==null?tr.noData:fmt(dv)+(ESTW.has(wi)?'*':'')}</td>`;}).join('') + `</tr>`;
+  });
+  return h + '</tbody></table></div>';
+}
+
+function historyHTML(){
+  const tr = t();
+  const periods = [];
+  DATA.weekMeta.forEach(m=>{ if(m.hist && !periods.includes(m.period)) periods.push(m.period); });
+  let h = '';
+  [...periods].reverse().forEach(per=>{
+    const wis = []; DATA.weekMeta.forEach((m,i)=>{ if(m.hist && m.period===per) wis.push(i); });
+    wis.reverse();                                   // newest first
+    const seasons = [...new Set(wis.map(i=>DATA.weekMeta[i].season))];
+    const lbl = fmon(per.slice(0,10)) + ' – ' + fmon(per.slice(-10), true);
+    const rows = DATA.players.map(p=>{
+      let tot=0,n=0; wis.forEach(i=>{ const d=val(p.wk[i]); if(d!=null){ tot+=d; n++; } });
+      return {p, tot, n};
+    }).filter(r=>r.n>0).sort((a,b)=>b.tot-a.tot);
+    h += `<h2>${lbl} <span class="seas">${seasons.join(' – ')}</span></h2>
+      <div class="tblwrap"><table><thead><tr>
+      <th class="rank">${tr.rank}</th><th class="name">${tr.player}</th><th>${tr.histTotal}</th>` +
+      wis.map(i=>`<th>${fdateShort(W[i])}${wkMark(i)}</th>`).join('') + `</tr></thead><tbody>`;
+    rows.forEach((r,i)=>{
+      h += `<tr class="${i<3?'top3':''}"><td class="rank">${i+1}</td><td class="name">${plink(r.p)}</td><td><b>${fmt(r.tot)}</b></td>` +
+        wis.map(wi=>{const dv=val(r.p.wk[wi]);
+          return `<td class="${dv==null?'zero':''}">${dv==null?tr.noData:fmt(dv)+(ESTW.has(wi)?'*':'')}</td>`;}).join('') + `</tr>`;
+    });
+    h += '</tbody></table></div>';
+  });
+  return h;
+}
+
+function playerHTML(){
+  const tr = t();
+  if(state.player==null){
+    const q = state.q.trim().toLowerCase();
+    const match = p => !q || p.n.toLowerCase().includes(q) || (p.rn && p.rn.toLowerCase().includes(q));
+    const act = DATA.players.filter(p=>!p.dep && match(p)).sort((a,b)=>a.n.localeCompare(b.n));
+    const dep = DATA.players.filter(p=>p.dep && match(p)).sort((a,b)=>a.n.localeCompare(b.n));
+    return `<div class="hint">${tr.pickPlayer}</div>
+      <input id="psearch" class="search" placeholder="${esc(tr.searchPh)}" value="${esc(state.q)}" oninput="setQ(this.value)">
+      <div class="plist">` +
+      act.map(p=>`<button data-pi="${DATA.players.indexOf(p)}">${esc(p.n)}</button>`).join('') +
+      dep.map(p=>`<button class="depp" data-pi="${DATA.players.indexOf(p)}">${esc(p.n)}</button>`).join('') +
+      `</div>`;
+  }
+  const p = DATA.players[state.player];
+  const st = stats(p);
+  let h = `<div class="pills"><button onclick="clearPlayer()">← ${tr.tabs[CFG.tabs[state.tab]]}</button></div>
+    <div class="pname">${esc(p.n)}${p.jn?' <span class="star">★</span>':''}</div>
+    <div class="pstatus ${p.dep?'gone':'cur'}">${p.dep?tr.statusDep:tr.statusCur} · ${tr.firstSeen}: ${fdate(W[st.first])} · ${tr.lastSeen}: ${fdate(W[st.last])}</div>`;
+  const multi = st.pts >= 2;   // one point is not an average, a best or a worst
+  h += `<div class="tiles">` + [
+      [tr.weeksRecorded, fmt(st.n)],
+      [tr.totalPts, fmt(st.total)],
+      [tr.avg, multi && st.avg!=null?fmt(st.avg):tr.noData],
+      [tr.best, multi && st.best?`${fmt(st.best[1])} <small>${fdateShort(W[st.best[0]])}</small>`:tr.noData],
+      [tr.worst, multi && st.worst?`${fmt(st.worst[1])} <small>${fdateShort(W[st.worst[0]])}</small>`:tr.noData],
+    ].map(([k,v])=>`<div class="tile"><div class="k">${k}</div><div class="v">${v}</div></div>`).join('') + `</div>`;
+
+  // One point is not a trend. Say so instead of drawing an empty chart.
+  if(st.pts < 2){
+    h += `<div class="note">${tr.noTrend}</div>`;
+  } else {
+    h += chartSVG(p, st);
+    h += `<div class="legend">
+      <span><span class="dot" style="background:var(--accent)"></span>${metricLabel()}</span>
+      <span><span class="dot" style="background:transparent;border-top:2px dashed var(--ink2);height:2px;width:14px;border-radius:0"></span>${tr.avg}</span>
+      <span><span class="dot" style="background:var(--gold)"></span>${tr.best}</span>
+      <span><span class="dot" style="background:var(--bad)"></span>${tr.worst}</span>
+    </div>`;
+  }
+  if(p.rn)   h += `<div class="note"><b>${tr.prevNames}:</b> ${esc(p.rn)}</div>`;
+  if(p.jn)   h += `<div class="note"><span class="star">★</span> ${tr.joined.replace('{date}',fdateShort(p.jn))}</div>`;
+  if(p.snap) h += `<div class="note">${tr.snapshot}</div>`;
+  else if(p.dep) h += `<div class="note">${tr.left}</div>`;
+  return h;
+}
+
+function chartSVG(p, st){
+  const tr = t();
+  const Wd=880, Hd=320, ml=64, mr=16, mt=16, mb=42;
+  const iw=Wd-ml-mr, ih=Hd-mt-mb;
+  const pts = pWeeks(p).map(i=>({i, d:val(p.wk[i])})).filter(q=>q.d!=null);
+  const vals = pts.map(q=>q.d);
+  let lo = Math.min(0, ...vals), hi = Math.max(...vals, st.avg||0);
+  if(hi===lo) hi = lo+1;
+  const pad=(hi-lo)*0.08; hi+=pad; lo=Math.min(0,lo);
+  const X = i => ml + (NW===1?iw/2:i/(NW-1)*iw);
+  const Y = d => mt + ih - (d-lo)/(hi-lo)*ih;
+  let s = `<div class="chartwrap" dir="ltr"><svg viewBox="0 0 ${Wd} ${Hd}" role="img">`;
+  const nt=4;
+  for(let k=0;k<=nt;k++){
+    const v2 = lo + (hi-lo)*k/nt, y = Y(v2);
+    s += `<line x1="${ml}" x2="${Wd-mr}" y1="${y}" y2="${y}" stroke="var(--line)" stroke-width="1"/>`;
+    s += `<text x="${ml-8}" y="${y+4}" text-anchor="end" font-size="11" style="fill:var(--ink2)">${fcompact(v2)}</text>`;
+  }
+  const step = Math.max(1, Math.ceil(NW/7));
+  for(let i=0;i<NW;i+=step){
+    s += `<text x="${X(i)}" y="${Hd-10}" text-anchor="middle" font-size="10" style="fill:var(--ink2)">${fdateShort(W[i])}</text>`;
+  }
+  if(st.avg!=null){
+    const y=Y(st.avg);
+    s += `<line x1="${ml}" x2="${Wd-mr}" y1="${y}" y2="${y}" stroke="var(--ink2)" stroke-width="1.5" stroke-dasharray="6 5"/>`;
+    s += `<text x="${Wd-mr-4}" y="${y-6}" text-anchor="end" font-size="11" style="fill:var(--ink2)">${tr.avg} ${fcompact(st.avg)}</text>`;
+  }
+  // Gaps in membership break the line rather than dropping to zero.
+  let seg=[];
+  const flush=()=>{ if(seg.length>1) s += `<polyline fill="none" stroke="var(--accent)" stroke-width="2" points="${seg.map(q=>X(q.i)+','+Y(q.d)).join(' ')}"/>`; seg=[]; };
+  pts.forEach((q,k)=>{ if(k>0 && pts[k-1].i !== q.i-1) flush(); seg.push(q); });
+  flush();
+  pts.forEach(q=>{
+    const isB = st.best && q.i===st.best[0] && q.d===st.best[1];
+    const isW = st.worst && q.i===st.worst[0] && q.d===st.worst[1];
+    let fill='var(--accent)', stroke='none', r=3.2;
+    if(ESTW.has(q.i)){ fill='var(--bg)'; stroke='var(--accent)'; r=4.2; }
+    if(NOSAT.has(q.i)){ fill='var(--bg)'; stroke='var(--warn)'; r=4.2; }
+    if(isB){ fill='var(--gold)'; r=5; }
+    if(isW){ fill='var(--bad)'; r=5; }
+    s += `<circle cx="${X(q.i)}" cy="${Y(q.d)}" r="${r}" fill="${fill}" ${stroke!=='none'?`stroke="${stroke}" stroke-width="2"`:''}>`+
+      `<title>${fdate(W[q.i])}${wkMark(q.i)}: ${fmt(q.d)}</title></circle>`;
+  });
+  return s + `</svg></div>`;
+}
+
+function agg(filterFn){
+  const m = new Map();
+  DATA.players.forEach(p=>{
+    Object.keys(p.wk).forEach(k=>{
+      const i=+k, wdate=W[i];
+      if(!filterFn(wdate)) return;
+      const d=val(p.wk[i]); if(d==null) return;
+      let e = m.get(p);
+      if(!e){ e={all:0,excl:0,n:0}; m.set(p,e); }
+      e.all += d; e.n += 1;
+      if(WM[wdate].type==='Normal') e.excl += d;
+    });
+  });
+  return [...m.entries()].map(([p,e])=>({p,...e})).sort((a,b)=>b.all-a.all);
+}
+
+function sumTable(rows){
+  const tr = t();
+  const ex = CFG.showExclSaving;
+  let h = `<div class="tblwrap"><table><thead><tr>
+    <th class="rank">${tr.rank}</th><th class="name">${tr.player}</th>
+    <th>${tr.ptsAll}</th>${ex?`<th>${tr.ptsExcl}</th>`:''}<th>${tr.weeksRec}</th></tr></thead><tbody>`;
+  rows.forEach((r,i)=>{
+    h += `<tr class="${i<3?'top3':''}"><td class="rank">${i+1}</td><td class="name">${plink(r.p)}</td>
+      <td>${fmt(r.all)}</td>${ex?`<td class="${r.excl?'':'zero'}">${r.excl?fmt(r.excl):tr.noData}</td>`:''}<td>${fmt(r.n)}</td></tr>`;
+  });
+  return h + '</tbody></table></div>';
+}
+
+function leaguesHTML(){
+  const pills = `<div class="pills">` + LEAGUES.map(lg=>
+    `<button class="${lg===state.league?'on':''}" onclick="setLeague('${lg}')">${fdateShort(lg.slice(0,10))} → ${fdateShort(lg.slice(-10))}</button>`).join('') + `</div>`;
+  return pills + sumTable(agg(w=>WM[w].league===state.league));
+}
+function seasonHTML(){
+  const pills = `<div class="pills">` + SEASONS.map(sn=>
+    `<button class="${sn===state.season?'on':''}" onclick="setSeason('${sn}')">${sn}</button>`).join('') + `</div>`;
+  return pills + sumTable(agg(w=>WM[w].season===state.season));
+}
+function eventsHTML(){
+  const tr = t();
+  if(!DATA.events || !DATA.events.length) return `<div class="hint">${tr.noData}</div>`;
+  const ev = DATA.events[state.event];
+  const pills = `<div class="pills">` + DATA.events.map((e,i)=>
+    `<button class="${i===state.event?'on':''}" onclick="setEvent(${i})">${esc(e.name)} · ${fdateShort(e.date)}</button>`).join('') + `</div>`;
+  const byName = {}; DATA.players.forEach(p=>byName[p.n]=p);
+  const nm = n => byName[n] ? plink(byName[n]) : esc(n);
+  const rows = [...ev.rows].sort((a,b)=>b.sc-a.sc);
+  const max = Math.max(...rows.map(r=>r.sc));
+  let h = `<div class="tblwrap"><table><thead><tr>
+    <th class="rank">${tr.rank}</th><th class="name">${tr.player}</th><th>${tr.score}</th></tr></thead><tbody>`;
+  rows.forEach((r,i)=>{
+    const pct = max&&r.sc? Math.max(2,r.sc/max*100):0;
+    h += `<tr class="${i<3&&r.sc?'top3':''} ${r.sc?'':'dep'}"><td class="rank">${r.sc?i+1:'–'}</td>
+      <td class="name">${nm(r.p)}${r.n?' <span class="star">★</span>':''}</td>
+      <td class="bar"><i style="width:${pct}%"></i><b>${r.sc?fmt(r.sc):tr.evMissed}</b></td></tr>`;
+  });
+  h += '</tbody></table></div>';
+  const m = {};
+  DATA.events.forEach(e=>e.rows.forEach(r=>{
+    const x = m[r.p] = m[r.p]||{pts:0,sc:0,ms:0,tot:0};
+    x.pts += r.sc; x.tot += 1; r.sc>0 ? x.sc++ : x.ms++;
+  }));
+  const srows = Object.entries(m).map(([name,x])=>({name,...x})).sort((a,b)=>b.pts-a.pts);
+  let h2 = `<h2>${tr.evPts}</h2><div class="tblwrap"><table><thead><tr>
+    <th class="rank">${tr.rank}</th><th class="name">${tr.player}</th>
+    <th>${tr.evPts}</th><th>${tr.evScored}</th><th>${tr.evMissed}</th><th>${tr.evTotal}</th></tr></thead><tbody>`;
+  srows.forEach((r,i)=>{
+    h2 += `<tr class="${i<3?'top3':''}"><td class="rank">${i+1}</td><td class="name">${nm(r.name)}</td>
+      <td>${fmt(r.pts)}</td><td>${fmt(r.sc)}</td><td class="${r.ms?'':'zero'}">${fmt(r.ms)}</td><td>${fmt(r.tot)}</td></tr>`;
+  });
+  return pills + h + h2 + '</tbody></table></div>';
+}
+
+function setLang(k){state.lang=k;render();}
+function setTab(i){ if(CFG.tabs[i]==='player' && CFG.tabs[state.tab]==='player') state.player=null; state.tab=i; render(); }
+function clearPlayer(){state.player=null;render();}
+function setLeague(lg){state.league=lg;render();}
+function setSeason(sn){state.season=sn;render();}
+function setEvent(i){state.event=i;render();}
+function setQ(v){state.q=v;state._search=true;render();}
+document.addEventListener('click', e=>{
+  const el = e.target.closest('[data-pi]');
+  if(!el) return;
+  state.player = +el.dataset.pi;
+  state.tab = CFG.tabs.indexOf('player');
+  render();
+  window.scrollTo({top:0});
+});
+render();
+
+</script>
+</body>
+</html>
